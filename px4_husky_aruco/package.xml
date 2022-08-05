@@ -3,9 +3,9 @@
 <package format="3">
   <name>px4_husky_aruco</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="sumedh@todo.todo">sumedh</maintainer>
-  <license>TODO: License declaration</license>
+  <description>MIPS RAAS Lab challenge</description>
+  <maintainer email="sumedhrk@umd.edu">sumedh</maintainer>
+  <license>BDS clause 3</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

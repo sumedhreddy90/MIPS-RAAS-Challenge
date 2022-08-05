@@ -5,7 +5,7 @@
   <version>0.0.0</version>
   <description>PX4 on Husky arcuo based landing</description>
   <maintainer email="sumedhrk@umd.edu">sumedh</maintainer>
-  <license>BSD 3-Clause "New" or "Revised" License</license>
+  <license>BSD 3 Clause New or Revised License</license>
 
   <exec_depend>rclpy</exec_depend>
   <exec_depend>std_msgs</exec_depend>

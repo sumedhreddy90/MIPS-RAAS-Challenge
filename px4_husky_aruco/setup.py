@@ -20,7 +20,7 @@ setup(
     maintainer='sumedh',
     maintainer_email='sumedhrk@umd.com',
     description='PX4 on Husky arcuo based landing',
-    license='BSD 3-Clause "New" or "Revised" License',
+    license='BSD 3 Clause New or Revised License',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [

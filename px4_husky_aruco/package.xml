@@ -3,16 +3,21 @@
 <package format="3">
   <name>px4_husky_aruco</name>
   <version>0.0.0</version>
-  <description>MIPS RAAS Lab challenge</description>
+  <description>PX4 on Husky arcuo based landing</description>
   <maintainer email="sumedhrk@umd.edu">sumedh</maintainer>
-  <license>BDS clause 3</license>
+  <license>BSD 3-Clause "New" or "Revised" License</license>
 
-  <buildtool_depend>ament_cmake</buildtool_depend>
-
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+  <test_depend>ament_cmake_gtest</test_depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
   <export>
-    <build_type>ament_cmake</build_type>
+    <build_type>ament_python</build_type>
   </export>
 </package>

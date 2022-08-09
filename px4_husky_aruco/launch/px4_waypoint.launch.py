@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import time
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -12,20 +11,16 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     """Launch Gazebo with a drone running PX4 communicating over ROS 2."""
-    HOME = "/home/sumedh"
-    PX4_RUN_DIR = HOME + '/PX4-Autopilot/build/px4_sitl_rtps/tmp'
+    HOME = os.environ.get('HOME')
+    PX4_RUN_DIR = HOME + '/tmp/px4_run_dir'
+    PX4_SITL_GAZEBO = HOME + '/PX4-Autopilot/Tools/sitl_gazebo'
     gazebo_launch_dir = os.path.join(get_package_share_directory('gazebo_ros'), 'launch')
-    world = "/home/sumedh/PX4-Autopilot/Tools/sitl_gazebo/worlds/hitl_iris.world"
-    model = "/home/sumedh/PX4-Autopilot/Tools/sitl_gazebo/models/iris/iris.sdf"
 
-    if 'GAZEBO_MODEL_PATH' in os.environ:
-        model_path =  os.environ['GAZEBO_MODEL_PATH'] + ':' + model
-    else:
-        model_path =  model
+    world = os.path.join(PX4_SITL_GAZEBO, 'worlds', 'typhoon_h480.world')
+    model = os.path.join(PX4_SITL_GAZEBO, 'models', 'iris_fpv_cam', 'iris_fpv_cam.sdf')
+    #custom_gazebo_models = os.path.join(blackdrones_description_dir, 'models')
+    #px4_init = os.path.join(blackdrones_description_dir, 'PX4-init')
 
-    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
-            arguments=[],
-            output='screen')
     os.makedirs(PX4_RUN_DIR, exist_ok=True)
 
     return LaunchDescription([
@@ -34,7 +29,6 @@ def generate_launch_description():
         SetEnvironmentVariable('GAZEBO_MODEL_PATH', HOME + '/PX4-Autopilot/Tools/sitl_gazebo/models'),
 
         SetEnvironmentVariable('PX4_SIM_MODEL', 'iris'),
-        SetEnvironmentVariable('PX4_SIM_SPEED_FACTOR', '10'),
 
         DeclareLaunchArgument('world', default_value=world),
         DeclareLaunchArgument('model', default_value=model),
@@ -44,11 +38,19 @@ def generate_launch_description():
         DeclareLaunchArgument('R', default_value='0.0'),
         DeclareLaunchArgument('P', default_value='0.0'),
         DeclareLaunchArgument('Y', default_value='0.0'),
-        
+
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([gazebo_launch_dir, '/gzserver.launch.py']),
+            launch_arguments={'world': LaunchConfiguration('world'),
+                              'verbose': 'true'}.items(),
+        ),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([gazebo_launch_dir, '/gzclient.launch.py'])
+        ),
+
         ExecuteProcess(
             cmd=[
-                'gazebo', '--verbose', world, '-s', 'libgazebo_ros_init.so', 
-                '-s', 'libgazebo_ros_factory.so', 'model',
+                'gz', 'model',
                 '--spawn-file', LaunchConfiguration('model'),
                 '--model-name', 'drone',
                 '-x', LaunchConfiguration('x'),
@@ -64,15 +66,14 @@ def generate_launch_description():
         ExecuteProcess(
             cmd=[
                 HOME + '/PX4-Autopilot/build/px4_sitl_rtps/bin/px4',
-                HOME + '/PX4-Autopilot/build/px4_sitl_rtps/etc',
+                HOME + '/PX4-Autopilot/ROMFS/px4fmu_common/',
                 '-s',
-                HOME + '/PX4-Autopilot/build/px4_sitl_rtps/etc/init.d-posix/rcS',
-                '-t',
-                HOME + '/PX4-Autopilot/test_data'
+                HOME + '/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/rcS'
             ],
             cwd=PX4_RUN_DIR,
             output='screen'),
         ExecuteProcess(
             cmd=['micrortps_agent', '-t', 'UDP'],
-            output='screen'), 
+            output='screen'),
+
 ])

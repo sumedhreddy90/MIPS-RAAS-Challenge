@@ -16,8 +16,16 @@ def generate_launch_description():
     PX4_RUN_DIR = HOME + '/PX4-Autopilot/build/px4_sitl_rtps/tmp'
     gazebo_launch_dir = os.path.join(get_package_share_directory('gazebo_ros'), 'launch')
     world = "/home/sumedh/PX4-Autopilot/Tools/sitl_gazebo/worlds/empty.world"
-    model = "/home/sumedh/PX4-Autopilot/Tools/sitl_gazebo/models/iris_fpv_cam/iris_fpv_cam.sdf"
-    os.environ["GAZEBO_MODEL_PATH"] = os.path.join(model)
+    model = "/home/sumedh/PX4-Autopilot/Tools/sitl_gazebo/models/iris/iris.sdf"
+
+    if 'GAZEBO_MODEL_PATH' in os.environ:
+        model_path =  os.environ['GAZEBO_MODEL_PATH'] + ':' + model
+    else:
+        model_path =  model
+
+    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
+            arguments=[],
+            output='screen')
     os.makedirs(PX4_RUN_DIR, exist_ok=True)
 
     return LaunchDescription([
@@ -36,10 +44,11 @@ def generate_launch_description():
         DeclareLaunchArgument('R', default_value='0.0'),
         DeclareLaunchArgument('P', default_value='0.0'),
         DeclareLaunchArgument('Y', default_value='0.0'),
+        
         ExecuteProcess(
             cmd=[
                 'gazebo', '--verbose', world, '-s', 'libgazebo_ros_init.so', 
-                '-s', 'libgazebo_ros_factory.so','model',
+                '-s', 'libgazebo_ros_factory.so', 'model',
                 '--spawn-file', LaunchConfiguration('model'),
                 '--model-name', 'drone',
                 '-x', LaunchConfiguration('x'),
@@ -51,7 +60,6 @@ def generate_launch_description():
             ],
             prefix="bash -c 'sleep 5s; $0 $@'",
             output='screen'),
-            
             
         ExecuteProcess(
             cmd=[

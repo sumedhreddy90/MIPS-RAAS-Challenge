@@ -15,7 +15,7 @@ def generate_launch_description():
     HOME = "/home/sumedh"
     PX4_RUN_DIR = HOME + '/PX4-Autopilot/build/px4_sitl_rtps/tmp'
     gazebo_launch_dir = os.path.join(get_package_share_directory('gazebo_ros'), 'launch')
-    world = "/home/sumedh/PX4-Autopilot/Tools/sitl_gazebo/worlds/empty.world"
+    world = "/home/sumedh/PX4-Autopilot/Tools/sitl_gazebo/worlds/hitl_iris.world"
     model = "/home/sumedh/PX4-Autopilot/Tools/sitl_gazebo/models/iris/iris.sdf"
 
     if 'GAZEBO_MODEL_PATH' in os.environ:

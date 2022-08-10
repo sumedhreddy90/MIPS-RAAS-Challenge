@@ -25,6 +25,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'px4_offboard = px4_husky_aruco.px4_offboard:main',
+            'px4_waypoint = px4_husky_aruco.px4_waypoint:main'
         ],
     },
 )

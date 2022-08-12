@@ -18,12 +18,14 @@ To reproduce the package Please make sure to install
 
 #### Follow instructions carefully given at [PX4 ROS2 Bridge](https://docs.px4.io/main/en/ros/ros2_comm.html)
 
-In your HOME directory, follow below instructions to run this package
+In your HOME directory, follow below instructions to Build and run this package
 ```
 mkdir px4_ros_com_ros2
 mkdir src
 cd scr
 git clone --recursive https://github.com/sumedhreddy90/MIPS-RAAS-Challenge.git
+cd ~/px4_ros_com_ros2/src/px4_ros_com/scripts
+bash bash build_ros2_workspace.bash
 
 ```
 #### Additionally, Install PX4-Autopilot in your HOME directory

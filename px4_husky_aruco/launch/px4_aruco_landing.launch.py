@@ -1,4 +1,4 @@
-"""Launch a Gazebo simulation spawning a PX4 drone communicating over ROS2."""
+#!/usr/bin/env python3
 
 import os
 
@@ -7,18 +7,19 @@ from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, ExecuteProcess, SetEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-
+from launch_ros.actions import Node
 
 def generate_launch_description():
     """Launch Gazebo with a drone running PX4 communicating over ROS 2."""
     HOME = os.environ.get('HOME')
-    PX4_RUN_DIR = HOME + '/PX4-Autopilot/build/px4_sitl_rtps/tmp'
+    PX4_RUN_DIR = HOME + '/tmp/px4_run_dir'
+    PX4_SITL_GAZEBO = HOME + '/PX4-Autopilot/Tools/sitl_gazebo'
     gazebo_launch_dir = os.path.join(get_package_share_directory('gazebo_ros'), 'launch')
 
-    px4_husky_description_dir = get_package_share_directory('px4_husky_aruco')
-    world = os.path.join(px4_husky_description_dir, 'worlds', 'empty.world')
-    model = '/home/sumedh/PX4-Autopilot/Tools/sitl_gazebo/models/iris/iris.sdf'
-    px4_init = os.path.join(px4_husky_description_dir, 'PX4-init')
+    world = os.path.join(PX4_SITL_GAZEBO, 'worlds', 'typhoon_h480.world')
+    model = os.path.join(PX4_SITL_GAZEBO, 'models', 'iris_fpv_cam', 'iris_fpv_cam.sdf')
+    #custom_gazebo_models = os.path.join(blackdrones_description_dir, 'models')
+    #px4_init = os.path.join(blackdrones_description_dir, 'PX4-init')
 
     os.makedirs(PX4_RUN_DIR, exist_ok=True)
 
@@ -26,14 +27,13 @@ def generate_launch_description():
         SetEnvironmentVariable('GAZEBO_PLUGIN_PATH',
                                HOME + '/PX4-Autopilot/build/px4_sitl_rtps/build_gazebo'),
         SetEnvironmentVariable('GAZEBO_MODEL_PATH', HOME + '/PX4-Autopilot/Tools/sitl_gazebo/models'),
-        SetEnvironmentVariable('PX4_SIM_MODEL', 'iris'),
-        SetEnvironmentVariable('PX4_SIM_SPEED_FACTOR', '10'),
 
+        SetEnvironmentVariable('PX4_SIM_MODEL', 'iris'),
         DeclareLaunchArgument('world', default_value=world),
         DeclareLaunchArgument('model', default_value=model),
-        DeclareLaunchArgument('x', default_value='1.01'),
-        DeclareLaunchArgument('y', default_value='0.98'),
-        DeclareLaunchArgument('z', default_value='0.83'),
+        DeclareLaunchArgument('x', default_value='0.0'),
+        DeclareLaunchArgument('y', default_value='0.0'),
+        DeclareLaunchArgument('z', default_value='0.0'),
         DeclareLaunchArgument('R', default_value='0.0'),
         DeclareLaunchArgument('P', default_value='0.0'),
         DeclareLaunchArgument('Y', default_value='0.0'),
@@ -49,7 +49,7 @@ def generate_launch_description():
 
         ExecuteProcess(
             cmd=[
-                'gazebo', 'model',
+                'gz', 'model',
                 '--spawn-file', LaunchConfiguration('model'),
                 '--model-name', 'drone',
                 '-x', LaunchConfiguration('x'),
@@ -61,21 +61,20 @@ def generate_launch_description():
             ],
             prefix="bash -c 'sleep 5s; $0 $@'",
             output='screen'),
-
+            
         ExecuteProcess(
             cmd=[
-                'xterm',
-                '-e',
                 HOME + '/PX4-Autopilot/build/px4_sitl_rtps/bin/px4',
-                px4_init,
-                '-s', px4_init + '/init.d-posix/rcS'
+                HOME + '/PX4-Autopilot/ROMFS/px4fmu_common/',
+                '-s',
+                HOME + '/PX4-Autopilot/ROMFS/px4fmu_common/init.d-posix/rcS'
             ],
             cwd=PX4_RUN_DIR,
             output='screen'),
         ExecuteProcess(
             cmd=['micrortps_agent', '-t', 'UDP'],
             output='screen'),
-        # ExecuteProcess(
-        #     cmd=['QGroundControl'],
-        #     output='screen'),
-    ])
+        
+        
+
+])

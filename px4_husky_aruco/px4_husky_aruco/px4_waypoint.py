@@ -8,7 +8,7 @@ from px4_interfaces.msg import Trajectory
 class Px4WayPoint(Node):
 
     def __init__(self):
-        super().__init__('minimal_publisher')
+        super().__init__('Px4WayPoint')
         self.publisher_ = self.create_publisher(Trajectory, 'waypoints', 10)
         self.i = 0
         self.waypoints = [[0, 0, -4, 0], [10, 0, -4, 0], [10, 10, -4, 0], [0, 10, -4, 0], [0, 0, -4, 0]]  ## In NED

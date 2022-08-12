@@ -17,7 +17,7 @@ def generate_launch_description():
     gazebo_launch_dir = os.path.join(get_package_share_directory('gazebo_ros'), 'launch')
 
     world = os.path.join(PX4_SITL_GAZEBO, 'worlds', 'typhoon_h480.world')
-    model = os.path.join(PX4_SITL_GAZEBO, 'models', 'typhoon_h480', 'typhoon_h480.sdf')
+    model = os.path.join(PX4_SITL_GAZEBO, 'models', 'iris_fpv_cam', 'iris_fpv_cam.sdf')
     #custom_gazebo_models = os.path.join(blackdrones_description_dir, 'models')
     #px4_init = os.path.join(blackdrones_description_dir, 'PX4-init')
 
@@ -28,7 +28,7 @@ def generate_launch_description():
                                HOME + '/PX4-Autopilot/build/px4_sitl_rtps/build_gazebo'),
         SetEnvironmentVariable('GAZEBO_MODEL_PATH', HOME + '/PX4-Autopilot/Tools/sitl_gazebo/models'),
 
-        SetEnvironmentVariable('PX4_SIM_MODEL', 'typhoon_h480'),
+        SetEnvironmentVariable('PX4_SIM_MODEL', 'iris'),
         DeclareLaunchArgument('world', default_value=world),
         DeclareLaunchArgument('model', default_value=model),
         DeclareLaunchArgument('x', default_value='0.0'),

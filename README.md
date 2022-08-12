@@ -25,7 +25,7 @@ mkdir src
 cd scr
 git clone --recursive https://github.com/sumedhreddy90/MIPS-RAAS-Challenge.git
 cd ~/px4_ros_com_ros2/src/px4_ros_com/scripts
-bash bash build_ros2_workspace.bash
+bash build_ros2_workspace.bash
 
 ```
 #### Additionally, Install PX4-Autopilot in your HOME directory

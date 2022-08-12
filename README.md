@@ -11,16 +11,32 @@ TODO:
 
 ### Progress:
 
-1. To launch PX4 using ROS2 
+1. To launch PX4 Iris using ROS2 
 
 ```
 ros2 launch px4_husky_aruco px4_aruco_landing.launch.py 
 ```
 
-2. To Arm the PX4 and hover the PX4 above the ground level by 4 meters
+2. To Arm the PX4 and hover the PX4 Iris above the ground level by 4 meters
 
 ```
 ros2 run px4_husky_aruco px4_offboard
 ```
 
-3. Waypoint Navigation using PX4 
+3. Waypoint Navigation using PX4 Iris - Perform a Square Trajectory 
+
+```
+ros2 run  px4_husky_aruco px4_waypoint
+```
+
+4. Aruco Marker detection using PX4 Iris
+
+```
+ros2 run ros2_markertracker markertracker_node
+```
+
+5. Land PX4 Iris onto Aruco Marker
+
+ ```
+ros2 run  px4_husky_aruco px4_aruco_landing
+```

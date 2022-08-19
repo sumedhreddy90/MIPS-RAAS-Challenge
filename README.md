@@ -112,3 +112,26 @@ ros2 launch px4_husky_aruco husky_waypoint.launch.py
 ### Spawn Husky algon with PX4 iris
 ```
 ```
+
+### Export these to your baschrc
+```
+source /opt/ros/foxy/setup.bash
+source /usr/share/gazebo/setup.sh
+source ~/px4_ros_com_ros2/install/setup.bash
+export PATH=/usr/lib/boost:$PATH
+export PATH=/usr/lib/ccache:$PATH
+
+# PX4 Gazebo Related
+source ~/PX4-Autopilot/Tools/setup_gazebo.bash ~/PX4-Autopilot ~/PX4-Autopilot//build/px4_sitl_default
+export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:~/PX4-Autopilot/Tools/sitl_gazebo/models
+export GAZEBO_RESOURCE_PATH=${GAZEBO_RESOURCE_PATH}:~/PX4-Autopilot/Tools/sitl_gazebo/worlds
+export QT_X11_NO_MITSHM=1
+export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:~/PX4-Autopilot
+export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:~/PX4-Autopilot/Tools/sitl_gazebo
+
+
+export GAZEBO_PLUGIN_PATH=${GAZEBO_PLUGIN_PATH}:~/PX4-Autopilot/build/px4_sitl_default/build_gazebo
+# Disable online model lookup since this is quite experimental and unstable
+export GAZEBO_MODEL_DATABASE_URI=""
+export SITL_GAZEBO_PATH=$HOME/PX4-AutopilotTools/sitl_gazebo
+```

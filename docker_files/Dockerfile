@@ -1,4 +1,4 @@
-FROM osrf/ros:foxy-desktop
+FROM osrf/ros:foxy-desktop-focal
 
 # Tools I find useful during development
 RUN apt-get update \

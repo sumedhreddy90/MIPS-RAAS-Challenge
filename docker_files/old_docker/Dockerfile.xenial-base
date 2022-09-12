@@ -1,0 +1,24 @@
+FROM aarch64/ubuntu:xenial
+
+RUN apt-get update
+RUN apt-get -y upgrade
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu xenial main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+RUN apt-get update
+RUN apt-get -y install python-rosdep
+RUN apt-get -y install python-pip
+RUN apt-get -y install python-rosinstall-generator
+RUN apt-get -y install python-wstool
+RUN apt-get -y install python-rosinstall
+RUN apt-get -y install build-essential
+RUN apt-get -y install libboost-all-dev
+RUN apt-get -y install libconsole-bridge-dev
+RUN apt-get -y install libtinyxml-dev
+RUN apt-get -y install sbcl-source
+RUN apt-get -y install sbcl-doc
+RUN apt-get -y install python-defusedxml
+RUN apt-get -y install vim
+RUN apt-get -y install sudo
+RUN apt-get -y install nano
+
+CMD /bin/bash

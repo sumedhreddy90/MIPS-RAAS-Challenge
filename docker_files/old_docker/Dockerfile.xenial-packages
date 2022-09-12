@@ -1,0 +1,24 @@
+FROM roskinetic-xenial:minimal
+
+RUN apt-get update
+
+RUN apt-get -y install python-rosdep
+RUN apt-get -y install python-rosinstall-generator
+RUN apt-get -y install python-wstool
+RUN apt-get -y install python-rosinstall
+
+WORKDIR /home/root/ros_catkin_ws
+
+COPY generator.sh ./
+
+RUN ["/bin/bash", "-c", "source /opt/ros/kinetic/setup.bash && ./generator.sh"]
+
+WORKDIR /home/root
+
+RUN rm -fR ros_catkin_ws
+
+RUN bash /opt/ros/kinetic/lib/mavros/install_geographiclib_datasets.sh
+
+RUN echo 'export PS1="roskinetic:\W\\$ "' >> /root/.bashrc
+
+CMD /bin/bash

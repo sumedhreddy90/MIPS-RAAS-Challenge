@@ -16,8 +16,7 @@ RUN apt-get update \
     ros-foxy-desktop \
  && apt-get clean
 
-# Micrortps demo dependencies
-# TODO(add as declared dependencies)
+# Micrortps dependencies
 RUN apt-get update \
 && apt-get install -y \
   python-future \
@@ -34,8 +33,10 @@ RUN apt-get update \
   python3-tk \
   libpulse-mainloop-glib0 \
   pulseaudio \
+  python3-colcon-common-extensions \
+  ros-foxy-eigen3-cmake-module \
   && apt-get clean \
-  && pip3 install catkin-pkg empy toml numpy tk future
+  && pip3 install catkin-pkg empy toml numpy tk future pyros-genmsg setuptools
 
 # optional dependency for qgc
 RUN apt-get update \
@@ -63,20 +64,40 @@ RUN apt-get update \
 RUN /bin/sh -c 'echo ". /opt/ros/foxy/setup.bash" >> ~/.bashrc' \
   && /bin/sh -c 'echo ". /usr/share/gazebo/setup.sh" >> ~/.bashrc'
 
+RUN cd $HOME
+RUN git clone git clone https://github.com/PX4/PX4-Autopilot.git --recursive
+RUN bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
+
+RUN cd $HOME
+RUN git clone https://github.com/eProsima/foonathan_memory_vendor.git
+RUN cd foonathan_memory_vendor
+RUN mkdir build && cd build
+RUN cmake ..
+RUN cmake --build . --target install
+
+RUN cd $HOME
+RUN git clone --recursive https://github.com/eProsima/Fast-DDS.git -b v2.1.2 ~/FastDDS-2.0.2
+RUN cd ~/FastDDS-2.0.2
+RUN mkdir build && cd build
+RUN cmake -DTHIRDPARTY=ON -DSECURITY=ON ..
+RUN make -j$(nproc --all)
+RUN sudo make install
+
+RUN git clone --recursive https://github.com/eProsima/Fast-DDS-Gen.git -b v1.0.4 ~/Fast-RTPS-Gen \ 
+&& cd ~/Fast-RTPS-Gen/gradle/wrapper
+
+RUN cd ~/Fast-RTPS-Gen 
+RUN ./gradlew assemble && sudo env "PATH=$PATH" ./gradlew install
+
 RUN mkdir  /workspace/px4_ros_com_ros2/src -p
 WORKDIR /workspace/px4_ros_com_ros2/src
 RUN git clone https://github.com/sumedhreddy90/MIPS-RAAS-Challenge.git
 
-# TODO(ahcorde): remove this cherry-pick when PR is merged
+
 RUN git config --global  user.name "someone" && git config --global user.email "someone@someplace.com"
 
 RUN apt-get update  && apt-get install python-jinja2 -y && apt-get clean
 
-RUN git clone https://github.com/mavlink/mavlink -b 1.0.12 --recursive && \
-    git clone https://github.com/mavlink/mavlink-gbp-release && \
-    mv mavlink-gbp-release/patch/* mavlink
-
-COPY files/mavlink/package.xml /workspace/px4_ros_com_ros2/src/mavlink/package.xml
 
 WORKDIR /workspace
 

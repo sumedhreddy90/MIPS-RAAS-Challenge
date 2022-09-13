@@ -38,25 +38,25 @@ RUN bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
 RUN cd $HOME
 RUN git clone https://github.com/eProsima/foonathan_memory_vendor.git
 WORKDIR /foonathan_memory_vendor
-RUN mkdir build && cd build
-RUN cmake ..
-RUN cmake --build . --target install
+RUN mkdir build && cd build \
+    cmake .. \
+    cmake --build . --target install
 
 RUN cd $HOME
 RUN git clone --recursive https://github.com/eProsima/Fast-DDS.git -b v2.1.2 ~/FastDDS-2.0.2
-RUN cd ~/FastDDS-2.0.2
-RUN mkdir build && cd build
-RUN cmake -DTHIRDPARTY=ON -DSECURITY=ON ..
-RUN make -j$(nproc --all)
-RUN sudo make install
+WORKDIR /FastDDS-2.0.2
+RUN mkdir build && cd build \
+    cmake -DTHIRDPARTY=ON -DSECURITY=ON .. \
+    make -j$(nproc --all) \
+    sudo make install
 
 RUN git clone --recursive https://github.com/eProsima/Fast-DDS-Gen.git -b v1.0.4 ~/Fast-RTPS-Gen \ 
 && cd ~/Fast-RTPS-Gen/gradle/wrapper
-
-RUN cd ~/Fast-RTPS-Gen 
+WORKDIR /Fast-RTPS-Gen 
 RUN ./gradlew assemble && sudo env "PATH=$PATH" ./gradlew install
 
-RUN mkdir  /workspace/px4_ros_com_ros2/src -p
+RUN cd $HOME
+RUN mkdir /workspace/px4_ros_com_ros2/src -p
 WORKDIR /workspace/px4_ros_com_ros2/src
 RUN git clone https://github.com/sumedhreddy90/MIPS-RAAS-Challenge.git
 

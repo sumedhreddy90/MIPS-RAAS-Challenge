@@ -20,6 +20,8 @@ if [ -n "${LOCAL_USER_ID}" ]; then
 	echo "Starting with UID : $LOCAL_USER_ID"
 	# modify existing user's id
 	usermod -u $LOCAL_USER_ID user
+    usermod --password $(openssl passwd mypwd) user
+    usermod -aG sudo user
 	# run as user
 	exec gosu user "$@"
 else

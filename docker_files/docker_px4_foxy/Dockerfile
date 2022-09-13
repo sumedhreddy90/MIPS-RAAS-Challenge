@@ -68,5 +68,7 @@ RUN rm -rf /usr/local/include/fastrtps /usr/local/share/fastrtps /usr/local/lib/
 # create and start as LOCAL_USER_ID
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+RUN chown root:root /usr/local/bin/entrypoint.sh
+RUN chmod 4755 /usr/local/bin/entrypoint.sh
 
 CMD ["/bin/bash"]

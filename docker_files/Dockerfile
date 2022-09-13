@@ -16,45 +16,12 @@ RUN apt-get update \
     ros-foxy-desktop \
  && apt-get clean
 
-# Micrortps dependencies
-RUN apt-get update \
-&& apt-get install -y \
-  python-future \
-  python3-future \
-  python-lxml \
-  python3-jinja2 -y \
-  openjdk-8-jdk \
-  rsync \
-  python-empy \
-  python-toml \
-  python-yaml \
-  python-numpy \
-  python-catkin-pkg \
-  python3-tk \
-  libpulse-mainloop-glib0 \
-  pulseaudio \
-  python3-colcon-common-extensions \
-  ros-foxy-eigen3-cmake-module \
-  && apt-get clean \
-  && pip3 install catkin-pkg empy toml numpy tk future pyros-genmsg setuptools
+RUN sudo apt -y install python3-pip
 
-# optional dependency for qgc
-RUN apt-get update \
- && apt-get install -y \
-    speech-dispatcher \
-    libimage-exiftool-perl \
-    gstreamer1.0-libav \
- && apt-get clean
+RUN sudo apt install python3-colcon-common-extensions
 
-# optional dependency for camera streaming
-RUN apt-get update \
- && apt-get install -y \
-    gstreamer1.0-alsa \
-    libgstreamer-plugins-base1.0-dev \
-    gstreamer1.0-plugins-bad \
-    gstreamer1.0-plugins-good \
-    gstreamer1.0-plugins-ugly \
- && apt-get clean
+RUN sudo apt install ros-foxy-eigen3-cmake-module
+
 
 # Make sure everything is up to date before building from source
 RUN apt-get update \
@@ -65,12 +32,12 @@ RUN /bin/sh -c 'echo ". /opt/ros/foxy/setup.bash" >> ~/.bashrc' \
   && /bin/sh -c 'echo ". /usr/share/gazebo/setup.sh" >> ~/.bashrc'
 
 RUN cd $HOME
-RUN git clone git clone https://github.com/PX4/PX4-Autopilot.git --recursive
+RUN git clone https://github.com/PX4/PX4-Autopilot.git --recursive
 RUN bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
 
 RUN cd $HOME
 RUN git clone https://github.com/eProsima/foonathan_memory_vendor.git
-RUN cd foonathan_memory_vendor
+WORKDIR /foonathan_memory_vendor
 RUN mkdir build && cd build
 RUN cmake ..
 RUN cmake --build . --target install
@@ -118,4 +85,3 @@ RUN apt-get update \
  && apt-get install -y \
     python3-contextlib2 \
  && apt-get clean
-

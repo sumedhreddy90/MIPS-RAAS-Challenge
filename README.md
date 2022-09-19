@@ -1,5 +1,7 @@
 # MIPS-RAAS-Challenge
 
+[Docker Link](https://hub.docker.com/repository/docker/sumedhrk/px4_ros2_arl)
+
 Tasks:
 
 1) [Done] perform waypoint navigation with px4 based UAV in gazebo environment; simple square pattern is enough. 

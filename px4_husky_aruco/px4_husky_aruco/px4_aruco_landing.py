@@ -43,7 +43,7 @@ class Px4WayPoint(Node):
         self.marker_msg_or_w = None
 
         self.local_pos_sub_ = self.create_subscription(VehicleOdometry, "fmu/vehicle_odometry/out", self.local_pos_callback, 10)
-        self.aruco_marker_sub_ = self.create_subscription(FiducialMarkerArray, "/fiducial_markers", self.aruco_marker_callback, 10)
+        #self.aruco_marker_sub_ = self.create_subscription(FiducialMarkerArray, "/fiducial_markers", self.aruco_marker_callback, 10)
         self.next_point = self.waypoints[self.i]
         self.current_point = [0, 0, 4, 0]
         self.new_point = True

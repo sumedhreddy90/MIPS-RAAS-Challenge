@@ -1,5 +1,7 @@
-FROM px4io/px4-dev-base-focal:2021-09-08
+FROM px4io/px4-dev-ros2-foxy:latest
 
+RUN apt-get update && \
+    apt-get -y install sudo
 # setup environment
 ENV ROS_DISTRO foxy
 
@@ -68,6 +70,7 @@ RUN rm -rf /usr/local/include/fastrtps /usr/local/share/fastrtps /usr/local/lib/
 # create and start as LOCAL_USER_ID
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
 RUN chown root:root /usr/local/bin/entrypoint.sh
 RUN chmod 4755 /usr/local/bin/entrypoint.sh
 

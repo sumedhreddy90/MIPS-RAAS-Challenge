@@ -10,6 +10,7 @@ Tasks:
 4) [Progress] Make UAV land on UGV which has an aruco marker on top of it
 5) [TODO] do the same with an extra UAV and UGV (team of two UAV-UGV couple)
 
+rosdep install --from-paths src --ignore-src -r -y 
 
 ### Progress:
 

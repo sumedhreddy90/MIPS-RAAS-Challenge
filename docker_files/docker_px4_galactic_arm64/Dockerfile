@@ -1,4 +1,4 @@
-FROM arm64v8/ubuntu:latest
+FROM arm64v8/ubuntu:focal
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8

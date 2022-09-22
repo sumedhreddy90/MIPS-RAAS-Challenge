@@ -65,11 +65,7 @@ RUN python3 -m pip install argparse argcomplete coverage cerberus empy jinja2 kc
 RUN ln -s /usr/bin/ccache /usr/lib/ccache/cc \
 	&& ln -s /usr/bin/ccache /usr/lib/ccache/c++
 
-# astyle v3.1
-RUN wget -q https://downloads.sourceforge.net/project/astyle/astyle/astyle%203.1/astyle_3.1_linux.tar.gz -O /tmp/astyle.tar.gz \
-	&& cd /tmp && tar zxf astyle.tar.gz && cd astyle/src \
-	&& make -f ../build/gcc/Makefile -j$(nproc) && cp bin/astyle /usr/local/bin \
-	&& rm -rf /tmp/*
+
 
 # Gradle (Required to build Fast-RTPS-Gen)
 RUN wget -q "https://services.gradle.org/distributions/gradle-6.3-rc-4-bin.zip" -O /tmp/gradle-6.3-rc-4-bin.zip \

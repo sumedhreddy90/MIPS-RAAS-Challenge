@@ -88,21 +88,6 @@ RUN git clone https://github.com/eProsima/foonathan_memory_vendor.git /tmp/foona
 	&& cmake --build . --target install -- -j $(nproc) \
 	&& rm -rf /tmp/*
 
-# Fast-DDS (Fast-RTPS 2.0.2)
-RUN git clone --recursive https://github.com/eProsima/Fast-DDS.git -b v2.0.2 /tmp/FastDDS-2.0.2 \
-	&& cd /tmp/FastDDS-2.0.2 \
-	&& mkdir build && cd build \
-	&& cmake -DTHIRDPARTY=ON -DSECURITY=ON .. \
-	&& cmake --build . --target install -- -j $(nproc) \
-	&& rm -rf /tmp/*
-
-# Fast-RTPS-Gen 1.0.4
-RUN git clone --recursive https://github.com/eProsima/Fast-DDS-Gen.git -b v1.0.4 /tmp/Fast-RTPS-Gen-1.0.4 \
-	&& cd /tmp/Fast-RTPS-Gen-1.0.4 \
-	&& gradle assemble \
-	&& gradle install \
-	&& rm -rf /tmp/*
-
 # create user with id 1001 (jenkins docker workflow default)
 RUN useradd --shell /bin/bash -u 1001 -c "" -m user && usermod -a -G dialout user
 
